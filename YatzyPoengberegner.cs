@@ -8,101 +8,66 @@ namespace Yatzy
 {
     internal class YatzyPoengberegner
     {
-
-        public static int[] ExtractNumbers(string kast)
-        {
-            return kast.Split(',').Select(number => int.Parse(number.Trim())).ToArray();
-        }
         public int BeregnPoeng(string kast, Kategori kategori)
         {
-            int[] tall = ExtractNumbers(kast);
-            int poeng = 0;
 
-            if (kategori.navn == "enere")
+            var terninger = kast.Split(',').Select(int.Parse).ToList();
+
+            switch (kategori)
             {
-                for (int i = 0; i < tall.Length; i++)
-                {
-                    if (tall[i] == 1)
-                    {
-                        poeng++;
-                    }
-                }
-                return poeng;
-            }
-            else if (kategori.navn == "toere")
-            {
-                for (int i = 0; i < tall.Length; i++)
-                {
-                    if (tall[i] == 2)
-                    {
-                        poeng+=2;
-                    }
-                }
-                return poeng;
-            }
-            else if (kategori.navn == "toere")
-            {
-                for (int i = 0; i < tall.Length - 1; i++)
-                {
-                    if (tall[i] == 2)
-                    {
-                        poeng += 2;
-                    }
-                }
-                return poeng;
-            }
-            else if (kategori.navn == "treere")
-            {
-                for (int i = 0; i < tall.Length; i++)
-                {
-                    if (tall[i] == 3)
-                    {
-                        poeng += 3;
-                    }
-                }
-                return poeng;
-            }
-            else if (kategori.navn == "firere")
-            {
-                for (int i = 0; i < tall.Length; i++)
-                {
-                    if (tall[i] == 4)
-                    {
-                        poeng += 4;
-                    }
-                }
-                return poeng;
-            }
-            else if (kategori.navn == "femmere")
-            {
-                for (int i = 0; i < tall.Length; i++)
-                {
-                    if (tall[i] == 5)
-                    {
-                        poeng += 5;
-                    }
-                }
-                return poeng;
-            }
-            else if (kategori.navn == "seksere")
-            {
-                for (int i = 0; i < tall.Length; i++)
-                {
-                    if (tall[i] == 6)
-                    {
-                        poeng += 6;
-                    }
-                }
-                return poeng;
-            }
-            else if (kategori.navn == "par")
-            {
-                
+                case Kategori.Enere:
+                    return terninger.Where(t => t == 1).Sum();
+
+                case Kategori.Toere:
+                    return terninger.Where(t => t == 2).Sum();
+
+                case Kategori.Treere:
+                    return terninger.Where(t => t == 3).Sum();
+
+                case Kategori.Firere:
+                    return terninger.Where(t => t == 4).Sum();
+
+                case Kategori.Par:
+                    return terninger.GroupBy(t => t)
+                                    .Where(gruppe => gruppe.Count() >= 2)
+                                    .Select(gruppe => gruppe.Key * 2)
+                                    .OrderByDescending(poeng => poeng)
+                                    .FirstOrDefault();
+
+                case Kategori.ToPar:
+                    var par = terninger.GroupBy(t => t)
+                                       .Where(gruppe => gruppe.Count() >= 2)
+                                       .Select(gruppe => gruppe.Key)
+                                       .OrderByDescending(t => t)
+                                       .Take(2)
+                                       .ToList();
+                    return par.Count == 2 ? par.Sum() * 2 : 0;
+
+                case Kategori.TreLike:
+                    return 0;
+
+                case Kategori.FireLike:
+                    return 0;
+
+                case Kategori.LitenStraight:
+                    return 0;
+
+                case Kategori.StorStraight:
+                    return 0;
+
+                case Kategori.FulltHus:
+                    return 0;
+
+                case Kategori.Sjanse:
+                    return 0;
+
+                case Kategori.Yatzy:
+                    return 0;
+
+                default:
+                    throw new NotImplementedException($"Kategori {kategori} er ikke implementert ennå.");
             }
 
-
-
-            return 0;
         }
     }
 }
