@@ -7,10 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="YatzyTests\" />
-    <Folder Include="YatzyApp\" />
-    <Folder Include="YatzyLib\" />
-  </ItemGroup>
-
 </Project>

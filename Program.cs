@@ -10,6 +10,6 @@ class Program
 
         int poengForYatzy = runde1.BeregnPoeng("1, 1, 2, 1, 3", Kategori.Enere);
 
-        Console.WriteLine(poengForYatzy);  
+        Console.WriteLine(poengForYatzy);
     }
 }

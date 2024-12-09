@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yatzy
 {
-    internal class YatzyPoengberegner
+    public class YatzyPoengberegner
     {
         public int BeregnPoeng(string kast, Kategori kategori)
         {
