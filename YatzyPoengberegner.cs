@@ -52,15 +52,17 @@ namespace Yatzy
                                        .Where(gruppe => gruppe.Count() >= 2)
                                        .Select(gruppe => gruppe.Key)
                                        .OrderByDescending(t => t)
-                                       .Take(2) //Prøv å fjerne
+                                       //.Take(2) //Trenger ikke denne
                                        .ToList();
-                    return par.Count == 2 ? par.Sum() * 2 : 0;
+
+                    if (par.Count == 2) { return par.Sum() * 2; }
+                    else return 0;
 
                 case Kategori.TreLike:
                     return terninger.GroupBy(t => t)
                                     .Where(gruppe => gruppe.Count() >= 3)
                                     .Select(gruppe => gruppe.Key * 3)
-                                    .FirstOrDefault(); 
+                                    .FirstOrDefault();
 
                 case Kategori.FireLike:
                     return terninger.GroupBy(t => t)
@@ -84,6 +86,7 @@ namespace Yatzy
                         return 20;
                     }
                     else return 0;
+
 
                 case Kategori.FulltHus:
                     var grupper = terninger.GroupBy(t => t); 
@@ -111,7 +114,7 @@ namespace Yatzy
                     else return 0;
 
                 default:
-                    throw new NotImplementedException($"Kategori {kategori} er ikke implementert ennå.");
+                    throw new NotImplementedException($"Kategori {kategori} finnes ikke");
             }
 
         }
@@ -129,7 +132,6 @@ namespace Yatzy
                 //Ønsker ikke at den skal bli forslått her.
                 if (kategori == Kategori.Sjanse) continue;
 
-
                 // Beregn poeng for denne kategorien
                 int poeng = BeregnPoeng(kast, kategori);
 
@@ -139,6 +141,13 @@ namespace Yatzy
                     høyestePoeng = poeng;
                     besteKategori = kategori;
                 }
+            }
+
+            int sjansePoeng = BeregnPoeng(kast, Kategori.Sjanse);
+            if (sjansePoeng > høyestePoeng)
+            {
+                besteKategori = Kategori.Sjanse;
+                høyestePoeng = sjansePoeng;
             }
 
             // Returner resultatet som en ny struktur

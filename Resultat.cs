@@ -16,12 +16,5 @@ namespace Yatzy
             Kategori = kategori;
             Poeng = poeng;
         }
-
-        /*
-        public override string ToString()
-        {
-            return $"{Kategori}: {Poeng} poeng og gir mest poeng for dette kastet";
-        }
-        */
     }
 }
